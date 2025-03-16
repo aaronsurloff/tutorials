@@ -13,6 +13,7 @@ def main():
         "Module 4: Budgeting, Forecasting & Consolidation",
         "Module 5: Real Estate Practices & Product Integration",
         "Module 6: Review & Assessment",
+        "Module 7: Bank Reconciliation",
     ]
     choice = st.sidebar.radio("Go to", pages)
     
@@ -30,6 +31,8 @@ def main():
         show_module5()
     elif choice == pages[6]:
         show_module6()
+    elif choice == pages[7]:
+        show_module7()
 
 # --- Module Functions ---
 
@@ -646,6 +649,51 @@ def show_module6():
         st.markdown("### Quiz Results")
         st.table(result_df)
         st.markdown(f"**Total Score: {score} out of 10**")
+
+def show_module7():
+    st.header("Module 7: Bank Reconciliation")
+    st.markdown("### Teaching Section: Bank Reconciliation Basics")
+    with st.expander("Learn Bank Reconciliation", expanded=True):
+        st.markdown("""
+        **Bank Reconciliation:**  
+        Bank reconciliation is the process of comparing the bank statement with the company's cash book (ledger) to identify and adjust for differences. Common adjustments include:
+        
+        - **Outstanding Checks:** Checks issued by the company that have not yet cleared the bank.
+        - **Deposits in Transit:** Deposits recorded in the ledger but not yet reflected on the bank statement.
+        - **Bank Service Fees/Interest:** Fees or interest that may not have been recorded in the ledger.
+        
+        **Objective:**  
+        The goal is to ensure that, after adjusting for these items, the cash balance per the bank statement matches the adjusted cash balance in the company's ledger.
+        """)
+    
+    st.markdown("### Interactive Exercise: Bank Reconciliation")
+    st.markdown("""
+    **Scenario:**  
+    - **Bank Statement Ending Balance:** $10,000  
+    - **Company Ledger (Cash Book) Balance:** $9,500  
+    
+    **Adjustments:**  
+    - Enter the total amount of Outstanding Checks (checks written but not yet cleared).  
+    - Enter the total amount of Deposits in Transit (deposits recorded in the ledger but not on the bank statement).  
+    - Enter any Bank Service Fees (if applicable).
+    
+    **Task:**  
+    Using the formula below, calculate the Reconciled Cash Balance:
+    
+    **Reconciled Bank Balance = Bank Statement Balance – Outstanding Checks + Deposits in Transit – Bank Service Fees**
+    """)
+    
+    bank_balance = st.number_input("Bank Statement Ending Balance ($)", value=10000, step=100, key="bank_balance")
+    ledger_balance = st.number_input("Company Ledger Cash Balance ($)", value=9500, step=100, key="ledger_balance")
+    outstanding_checks = st.number_input("Outstanding Checks ($)", value=0, step=50, key="outstanding_checks")
+    deposits_in_transit = st.number_input("Deposits in Transit ($)", value=0, step=50, key="deposits_in_transit")
+    bank_fees = st.number_input("Bank Service Fees ($)", value=0, step=10, key="bank_fees")
+    
+    if st.button("Calculate Reconciled Balance", key="calc_reconcile"):
+        reconciled_balance = bank_balance - outstanding_checks + deposits_in_transit - bank_fees
+        st.markdown(f"**Reconciled Cash Balance (Bank Method):** ${reconciled_balance:.2f}")
+        st.info("Ideally, the reconciled balance should match the company's adjusted ledger balance.")
+
 
 if __name__ == '__main__':
     main()
