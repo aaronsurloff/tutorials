@@ -8,10 +8,10 @@ def main():
     pages = [
         "Introduction",
         "Module 1: Accounting Fundamentals & the 5 Categories",
-        "Module 2: Journal Entries, Accruals & Balancing",
+        "Module 2: Journal Entries & Accruals",
         "Module 3: Managing the Chart of Accounts",
         "Module 4: Budgeting, Forecasting & Consolidation",
-        "Module 5: Real Estate Practices & Product Integration",
+        "Module 5: Real Estate Practices",
         "Module 6: Review & Assessment",
         "Module 7: Bank Reconciliation",
     ]
@@ -169,12 +169,7 @@ def show_module2():
     
     **Task:**  
     1. **Accrual Entry (End of Month):**  
-       - **Debit:** Property Tax Expense \$1,200  
-       - **Credit:** Accrued Property Taxes \$1,200  
-       
     2. **Payment Entry (Next Month):**  
-       - **Debit:** Accrued Property Taxes \$1,200  
-       - **Credit:** Cash \$1,200  
     """)
     
     st.markdown("#### Part A: Record the Accrual Entry")
