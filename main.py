@@ -160,109 +160,124 @@ def show_module1():
         st.success("Review your submitted answers against the expected answers above.")
 
 def show_module2():
-    st.header("Module 2: Journal Entries, Accruals & Balancing")
-    st.markdown("### Teaching Section")
-    with st.expander("Recording Transactions & Accruals", expanded=True):
-        st.markdown("""
-        **Journal Entries:**  
-        Every transaction is recorded with debits and credits that must balance.
-        
-        **Accruals:**  
-        Record revenues or expenses when they occur—even if cash hasn’t changed hands.
-        - *Example:* If a $500 repair expense is incurred in December but paid in January, record an accrual in December.
-        
-        **Reversing Entries:**  
-        In the following period, a reversing entry cancels out the accrual.
-        
-        **Example of an Accrual Entry:**  
-        - **Debit:** Repair Expense $500  
-        - **Credit:** Accrued Expenses $500
-        
-        **Reversing Entry:**  
-        - **Debit:** Accrued Expenses $500  
-        - **Credit:** Repair Expense $500
-        """)
+    st.header("Module 2: Journal Entries – Property Tax & Depreciation")
     
-    st.markdown("### Interactive Exercise: Record a Repair Expense Accrual")
+    st.markdown("### Exercise 1: Property Tax Accrual and Payment")
+    st.markdown("""
+    **Scenario:**  
+    At the end of the month, your company incurs property taxes of \$1,200. Although payment will be made next month, you must record the expense now.
+    
+    **Task:**  
+    1. **Accrual Entry (End of Month):**  
+       - **Debit:** Property Tax Expense \$1,200  
+       - **Credit:** Accrued Property Taxes \$1,200  
+       
+    2. **Payment Entry (Next Month):**  
+       - **Debit:** Accrued Property Taxes \$1,200  
+       - **Credit:** Cash \$1,200  
+    """)
+    
+    st.markdown("#### Part A: Record the Accrual Entry")
     accrual_df = pd.DataFrame({
         "Account": ["", ""],
         "Entry Type": ["", ""],
         "Amount ($)": [0, 0]
     }, index=["Line 1", "Line 2"])
+    
+    # Provide options for the accrual entry:
+    accrual_account_options = ["", "Property Tax Expense", "Accrued Property Taxes", "Cash"]
+    entry_type_options = ["Debit", "Credit"]
+    
     edited_accrual_df = st.data_editor(
         accrual_df,
         num_rows="fixed",
         key="accrual_editor",
         column_config={
-            "Account": st.column_config.SelectboxColumn("Account", options=["Repair Expense", "Accrued Expenses"]),
-            "Entry Type": st.column_config.SelectboxColumn("Entry Type", options=["Debit", "Credit"]),
+            "Account": st.column_config.SelectboxColumn("Account", options=accrual_account_options),
+            "Entry Type": st.column_config.SelectboxColumn("Entry Type", options=entry_type_options)
         }
     )
-    if st.button("Submit Accrual Entry", key="submit_accrual_entry"):
-        try:
-            df = edited_accrual_df
-            total_debits = df[df["Entry Type"] == "Debit"]["Amount ($)"].sum()
-            total_credits = df[df["Entry Type"] == "Credit"]["Amount ($)"].sum()
-        except Exception as e:
-            st.error("Error calculating totals. Ensure all amounts are numeric.")
-            total_debits = total_credits = 0
-        
-        st.markdown("**Your Accrual Journal Entry:**")
-        st.table(edited_accrual_df)
-        st.write("Total Debits: $", total_debits)
-        st.write("Total Credits: $", total_credits)
-        if total_debits == total_credits and total_debits > 0:
-            st.success("Balanced Entry: Debits equal Credits!")
-        else:
-            st.error("Unbalanced Entry: Please ensure total debits equal total credits.")
     
-    st.markdown("### Interactive Exercise: Record a Reversing Entry")
-    reversing_df = pd.DataFrame({
+    if st.button("Submit Accrual Entry", key="submit_accrual"):
+        st.markdown("**Expected Accrual Entry:**")
+        st.markdown("""
+        - **Line 1:** Debit: Property Tax Expense \$1,200  
+        - **Line 2:** Credit: Accrued Property Taxes \$1,200
+        """)
+        st.success("Review the expected accrual entry.")
+    
+    st.markdown("---")
+    st.markdown("#### Part B: Record the Payment Entry")
+    payment_df = pd.DataFrame({
         "Account": ["", ""],
         "Entry Type": ["", ""],
         "Amount ($)": [0, 0]
     }, index=["Line 1", "Line 2"])
-    edited_reversing_df = st.data_editor(
-        reversing_df,
+    
+    # Provide options for the payment entry:
+    payment_account_options = ["", "Accrued Property Taxes", "Cash", "Property Tax Expense"]
+    
+    edited_payment_df = st.data_editor(
+        payment_df,
         num_rows="fixed",
-        key="reversing_editor",
+        key="payment_editor",
         column_config={
-            "Account": st.column_config.SelectboxColumn("Account", options=["Accrued Expenses", "Repair Expense"]),
-            "Entry Type": st.column_config.SelectboxColumn("Entry Type", options=["Debit", "Credit"]),
+            "Account": st.column_config.SelectboxColumn("Account", options=payment_account_options),
+            "Entry Type": st.column_config.SelectboxColumn("Entry Type", options=entry_type_options)
         }
     )
-    if st.button("Submit Reversing Entry", key="submit_reversing_entry"):
-        try:
-            rev_df = edited_reversing_df
-            total_debits_rev = rev_df[rev_df["Entry Type"] == "Debit"]["Amount ($)"].sum()
-            total_credits_rev = rev_df[rev_df["Entry Type"] == "Credit"]["Amount ($)"].sum()
-        except Exception as e:
-            st.error("Error calculating totals for reversing entry.")
-            total_debits_rev = total_credits_rev = 0
-        
-        st.markdown("**Your Reversing Journal Entry:**")
-        st.table(edited_reversing_df)
-        st.write("Total Debits: $", total_debits_rev)
-        st.write("Total Credits: $", total_credits_rev)
-        if total_debits_rev == total_credits_rev and total_debits_rev > 0:
-            st.success("Balanced Entry: Debits equal Credits!")
-        else:
-            st.error("Unbalanced Entry: Please ensure total debits equal total credits.")
     
-    st.markdown("### Hands-On: Simulate Your Own Journal Entry")
-    with st.expander("Enter details for a new transaction", expanded=True):
-        debit_account = st.text_input("Debit Account", "Cash", key="debit_account_own")
-        debit_amt = st.number_input("Debit Amount ($)", min_value=0.0, value=1000.0, step=50.0, key="debit_amt_own")
-        credit_account = st.text_input("Credit Account", "Rental Income", key="credit_account_own")
-        credit_amt = st.number_input("Credit Amount ($)", min_value=0.0, value=1000.0, step=50.0, key="credit_amt_own")
-        if st.button("Submit Journal Entry", key="submit_journal_own"):
-            st.markdown("**Your Journal Entry:**")
-            st.markdown(f"- **Debit:** {debit_account} ${debit_amt}")
-            st.markdown(f"- **Credit:** {credit_account} ${credit_amt}")
-            if debit_amt == credit_amt:
-                st.success("Balanced Entry: Debits equal Credits!")
-            else:
-                st.error("Unbalanced Entry: Please ensure total debits equal total credits.")
+    if st.button("Submit Payment Entry", key="submit_payment"):
+        st.markdown("**Expected Payment Entry:**")
+        st.markdown("""
+        - **Line 1:** Debit: Accrued Property Taxes \$1,200  
+        - **Line 2:** Credit: Cash \$1,200
+        """)
+        st.success("Review the expected payment entry.")
+    
+    st.markdown("### Exercise 2: Depreciation Journal Entry")
+    st.markdown("""
+    **Scenario:**  
+    A property is purchased for \$500,000 with a useful life of 25 years (no salvage value).  
+    **Task:**  
+    - Calculate the monthly depreciation using the straight‑line method.  
+    - Record the monthly depreciation journal entry.
+    
+    **Calculation:**  
+    Monthly Depreciation = \$500,000 / (25 years × 12 months) ≈ \$1,666.67
+    
+    **Expected Entry:**  
+    - **Debit:** Depreciation Expense \$1,666.67  
+    - **Credit:** Accumulated Depreciation \$1,666.67
+    """)
+    
+    st.markdown("#### Record the Depreciation Journal Entry")
+    depreciation_df = pd.DataFrame({
+        "Account": ["", ""],
+        "Entry Type": ["", ""],
+        "Amount ($)": [0, 0]
+    }, index=["Line 1", "Line 2"])
+    
+    # Provide options for the depreciation entry:
+    depreciation_account_options = ["", "Depreciation Expense", "Accumulated Depreciation", "Cash"]
+    
+    edited_depreciation_df = st.data_editor(
+        depreciation_df,
+        num_rows="fixed",
+        key="depreciation_editor",
+        column_config={
+            "Account": st.column_config.SelectboxColumn("Account", options=depreciation_account_options),
+            "Entry Type": st.column_config.SelectboxColumn("Entry Type", options=entry_type_options)
+        }
+    )
+    
+    if st.button("Submit Depreciation Entry", key="submit_depreciation"):
+        st.markdown("**Expected Depreciation Entry:**")
+        st.markdown("""
+        - **Line 1:** Debit: Depreciation Expense \$1,666.67  
+        - **Line 2:** Credit: Accumulated Depreciation \$1,666.67
+        """)
+        st.success("Review the expected depreciation entry.")
 
 def show_module3():
     st.header("Module 3: Managing the Chart of Accounts")
