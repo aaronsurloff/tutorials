@@ -55,19 +55,29 @@ def show_module1():
         In accounting, every transaction falls into one of five key categories:
         
         **Assets:**  
-        - Resources owned by a business (e.g., Cash, Property, Equipment).
+        - Definition: Resources owned by a business (e.g., Cash, Property, Equipment, Accounts Receivable).
+        - Normal Balance: Assets normally have a debit balance (they increase with debits and decrease with credits).
+        - Journal Entry: Every transaction affecting assets must be balanced by corresponding credits elsewhere.
         
         **Liabilities:**  
-        - Debts or obligations (e.g., Loans, Accounts Payable, Accrued Expenses).
+        - Definition: Debts or obligations (e.g., Loans, Accounts Payable, Accrued Expenses).
+        - Normal Balance: Liabilities normally have a credit balance (they increase with credits and decrease with debits).
+        - Journal Entry: Any increase in liabilities (recorded as a credit) must be balanced by a corresponding debit in another account.
         
         **Equity:**  
-        - The residual interest after liabilities are deducted from assets (e.g., Owner’s Equity, Retained Earnings).
+        - Definition: The residual interest after liabilities are deducted from assets (e.g., Owner’s Equity, Retained Earnings).
+        - Normal Balance: Equity accounts normally have a credit balance.
+        - Journal Entry: Changes in equity (such as net income) are recorded via balanced entries that ultimately affect the equity section of the balance sheet.
         
         **Revenue:**  
-        - Income earned from business operations (e.g., Rental Income, Sales Revenue).
-        
+        - Definition: Income earned from business operations (e.g., Rental Income, Sales Revenue).
+        - Normal Balance: Revenue accounts normally have a credit balance (they increase with credits).
+        - Journal Entry: Revenue increases are recorded as credits; they must be offset by debits in other accounts.
+                            
         **Expenses:**  
-        - Costs incurred in generating revenue (e.g., Maintenance, Utilities, Marketing).
+        - Definition: Costs incurred in generating revenue (e.g., Maintenance, Utilities, Marketing).
+        - Normal Balance: Expense accounts normally have a debit balance (they increase with debits).
+        - Journal Entry: Expense increases are recorded as debits; they must be offset by credits in other accounts.
         
         **Double-Entry Principle:**  
         Every transaction is recorded with at least one debit and one credit. For a balanced entry, total debits must equal total credits.
@@ -79,7 +89,7 @@ def show_module1():
             "Date": ["10/1", "10/1", "10/3", "10/3"],
             "Debit": [2000, 0, 2000, 0],
             "Credit": [0, 2000, 0, 2000]
-            
+
         }
         rental_df = pd.DataFrame(rental_data)
         st.table(rental_df)
@@ -97,8 +107,8 @@ def show_module1():
       *Hint: Debit the Liability account and Credit Cash.*
     """)
     
-    invoice_account_options = ["Pipe Replacement Expense", "Maintenance Expense", "Accounts Payable", "Accrued Expenses"]
-    payment_account_options = ["Accounts Payable", "Accrued Expenses", "Cash"]
+    invoice_account_options = [ "Maintenance Expense", "Accounts Payable"]
+    payment_account_options = ["Accounts Payable", "Cash"]
     entry_type_options = ["Debit", "Credit"]
     
     st.markdown("#### Invoice Receipt (March 18th)")
@@ -134,20 +144,15 @@ def show_module1():
     )
     
     if st.button("Submit Answers for Quiz", key="submit_quiz_mod1_table"):
-        st.markdown("### Your Submitted Answers")
-        st.write("#### Invoice Receipt (March 18th)")
-        st.table(edited_invoice_df)
-        st.write("#### Payment (April 1st)")
-        st.table(edited_payment_df)
         st.markdown("**Expected Answer:**")
         st.markdown("""
         **Invoice Receipt (March 18th):**  
-        - **Line 1:** Debit: Pipe Replacement Expense (or Maintenance Expense) $500  
-        - **Line 2:** Credit: Accounts Payable (or Accrued Expenses) $500  
+        - **Line 1:** Debit: Maintenance Expense (Expense) $500  
+        - **Line 2:** Credit: Accounts Payable (Liability) $500  
         
         **Payment (April 1st):**  
-        - **Line 1:** Debit: Accounts Payable (or Accrued Expenses) $500  
-        - **Line 2:** Credit: Cash $500  
+        - **Line 1:** Debit: Accounts Payable (Liability) $500  
+        - **Line 2:** Credit: Cash (Asset) $500  
         """)
         st.success("Review your submitted answers against the expected answers above.")
 
