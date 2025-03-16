@@ -107,8 +107,8 @@ def show_module1():
       *Hint: Debit the Liability account and Credit Cash.*
     """)
     
-    invoice_account_options = [ "Maintenance Expense", "Accounts Payable"]
-    payment_account_options = ["Accounts Payable", "Cash"]
+    invoice_account_options = [ "Maintenance (Expense)", "Accounts Payable (Liability)"]
+    payment_account_options = ["Accounts Payable (Liability)", "Cash (Asset)"]
     entry_type_options = ["Debit", "Credit"]
     
     st.markdown("#### Invoice Receipt (March 18th)")
