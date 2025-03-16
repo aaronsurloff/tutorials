@@ -10,10 +10,10 @@ def main():
         "Module 1: Accounting Fundamentals & the 5 Categories",
         "Module 2: Journal Entries & Accruals",
         "Module 3: Managing the Chart of Accounts",
-        "Module 4: Budgeting, Forecasting & Consolidation",
-        "Module 5: Real Estate Practices",
-        "Module 6: Review & Assessment",
-        "Module 7: Bank Reconciliation",
+        "Module 4: Real Estate Practices",
+        "Module 5: Bank Reconciliation",
+        "Module 6: Budgeting, Forecasting & Consolidation",
+        "Module 7: Review & Assessment",
     ]
     choice = st.sidebar.radio("Go to", pages)
     
@@ -26,13 +26,13 @@ def main():
     elif choice == pages[3]:
         show_module3()
     elif choice == pages[4]:
-        show_module4()
+        show_module5()  # Real Estate Practices now as Module 4
     elif choice == pages[5]:
-        show_module5()
+        show_module7()  # Bank Reconciliation now as Module 5
     elif choice == pages[6]:
-        show_module6()
+        show_module4()  # Budgeting, Forecasting & Consolidation now as Module 6
     elif choice == pages[7]:
-        show_module7()
+        show_module6()  # Review & Assessment now as Module 7
 
 # --- Module Functions ---
 
@@ -92,7 +92,6 @@ def show_module1():
             "Date": ["10/1", "10/1", "10/3", "10/3"],
             "Debit": [2000, 0, 2000, 0],
             "Credit": [0, 2000, 0, 2000]
-
         }
         rental_df = pd.DataFrame(rental_data)
         st.table(rental_df)
@@ -160,7 +159,7 @@ def show_module1():
         st.success("Review your submitted answers against the expected answers above.")
 
 def show_module2():
-    st.header("Module 2: Journal Entries – Property Tax & Depreciation")
+    st.header("Module 2: Journal Entries & Accruals")
     
     st.markdown("### Exercise 1: Property Tax Accrual and Payment")
     st.markdown("""
@@ -179,7 +178,6 @@ def show_module2():
         "Amount ($)": [0, 0]
     }, index=["Line 1", "Line 2"])
     
-    # Provide options for the accrual entry:
     accrual_account_options = ["", "Property Tax Expense", "Accrued Property Taxes", "Cash"]
     entry_type_options = ["Debit", "Credit"]
     
@@ -209,7 +207,6 @@ def show_module2():
         "Amount ($)": [0, 0]
     }, index=["Line 1", "Line 2"])
     
-    # Provide options for the payment entry:
     payment_account_options = ["", "Accrued Property Taxes", "Cash", "Property Tax Expense"]
     
     edited_payment_df = st.data_editor(
@@ -253,7 +250,6 @@ def show_module2():
         "Amount ($)": [0, 0]
     }, index=["Line 1", "Line 2"])
     
-    # Provide options for the depreciation entry:
     depreciation_account_options = ["", "Depreciation Expense", "Accumulated Depreciation", "Cash"]
     
     edited_depreciation_df = st.data_editor(
@@ -293,10 +289,8 @@ def show_module3():
     st.markdown("### Interactive Exercise: Build Your Chart of Accounts")
     st.markdown("For each fundamental category, select the appropriate account from the dropdown below. Your answer will be compared to the correct account.")
 
-    # Define the five categories.
     categories = ["Assets", "Liabilities", "Equity", "Revenue", "Expenses"]
 
-    # Remove any default by prepending an empty string.
     account_options = {
         "Assets": ["", "Accrued Expenses", "Unpaid Vendor Invoice", "Cash", "Retained Earnings", "Maintenance", "Rental Income"],
         "Liabilities": ["", "Accrued Expenses", "Unpaid Vendor Invoice", "Cash", "Retained Earnings", "Maintenance", "Rental Income"],
@@ -305,7 +299,6 @@ def show_module3():
         "Expenses": ["", "Accrued Expenses", "Unpaid Vendor Invoice", "Cash", "Retained Earnings", "Maintenance", "Rental Income"]
     }
 
-    # Define the correct mapping.
     correct_mapping = {
         "Assets": "Cash",
         "Liabilities": "Unpaid Vendor Invoice",
@@ -314,7 +307,6 @@ def show_module3():
         "Expenses": "Maintenance"
     }
 
-    # Create a list to store the user selections.
     coa_entries = []
     for category in categories:
         selected_account = st.selectbox(f"Select the correct {category} Account", 
@@ -330,7 +322,6 @@ def show_module3():
         coa_df = pd.DataFrame(coa_entries)
         st.markdown("### Your Chart of Accounts")
         st.table(coa_df)
-        # Display correctness feedback for each category.
         for idx, row in coa_df.iterrows():
             if row["Your Answer"] == row["Correct Answer"]:
                 st.write(f"**{row['Category']}**: Correct!")
@@ -338,7 +329,7 @@ def show_module3():
                 st.write(f"**{row['Category']}**: Incorrect. The correct account is **{row['Correct Answer']}**.")
 
 def show_module4():
-    st.header("Module 4: Budgeting, Forecasting & Consolidation")
+    st.header("Module 6: Budgeting, Forecasting & Consolidation")
     st.markdown("### Teaching Section: Financial Planning")
     with st.expander("Budgeting & Forecasting Basics", expanded=True):
         st.markdown("""
@@ -384,7 +375,7 @@ def show_module4():
         st.info("Reconciliation helps identify variances, improves forecasting, and ensures financial accuracy.")
 
 def show_module5():
-    st.header("Module 5: Real Estate Practices & Product Integration")
+    st.header("Module 4: Real Estate Practices")
     st.markdown("### Teaching Section: Real Estate Specifics")
     with st.expander("Lease Accounting & Operational Metrics", expanded=True):
         st.markdown("""
@@ -399,7 +390,6 @@ def show_module5():
         """)
     
     st.markdown("### Interactive Exercise: Lease Incentive Simulator")
-    # Force selection with a "Please select" option.
     lease_term_options = ["Please select", 12, 24, 36]
     lease_term = st.selectbox("Lease Term (months)", options=lease_term_options, key="lease_term")
     
@@ -421,7 +411,6 @@ def show_module5():
     """)
     
     if monthly_adjustment is not None:
-        # Prepare a table for user configuration (for input only, not used for output).
         lease_entry_df = pd.DataFrame({
             "Category": ["", ""],
             "Account": ["", ""],
@@ -430,7 +419,6 @@ def show_module5():
             "Cadence": ["", ""],
             "Duration": [0, 0]
         }, index=["Line 1", "Line 2"])
-        # Dropdown options for configuration.
         category_options = ["", "Asset", "Liability", "Equity", "Revenue", "Expense"]
         lease_account_options = ["", "Concessions", "Rental Income"]
         lease_entry_type_options = ["Debit", "Credit"]
@@ -450,7 +438,6 @@ def show_module5():
         
         st.markdown("When finished, click the button to submit your recurring journal entry configuration.")
         if st.button("Submit Recurring Journal Entry", key="submit_lease_entry"):
-            # Instead of using the user's configuration, output the correct answer.
             expected_config = pd.DataFrame({
                 "Category": ["Expense", "Revenue"],
                 "Account": ["Concessions", "Rental Income"],
@@ -462,7 +449,6 @@ def show_module5():
             st.markdown("### Correct Recurring Journal Entry Configuration")
             st.table(expected_config)
             
-            # Generate a schedule for the entire lease term.
             months = list(range(1, int(lease_term) + 1))
             schedule_rows = []
             for m in months:
@@ -487,10 +473,9 @@ def show_module5():
             st.success("Review the recurring schedule to understand how the entry is applied over the lease term.")
 
 def show_module6():
-    st.header("Module 6: Review & Assessment")
+    st.header("Module 7: Review & Assessment")
     st.markdown("### Final Multiple Choice Quiz")
     
-    # Question 1
     q1 = st.radio(
         "1. What are the three primary financial statements?",
         options=[
@@ -502,7 +487,6 @@ def show_module6():
         key="q1"
     )
     
-    # Question 2
     q2 = st.radio(
         "2. Which account category does Cash belong to?",
         options=[
@@ -516,7 +500,6 @@ def show_module6():
         key="q2"
     )
     
-    # Question 3
     q3 = st.radio(
         "3. What is the fundamental equation of the Balance Sheet?",
         options=[
@@ -528,7 +511,6 @@ def show_module6():
         key="q3"
     )
     
-    # Question 4
     q4 = st.radio(
         "4. Which financial statement shows a company’s profitability over a period?",
         options=[
@@ -540,7 +522,6 @@ def show_module6():
         key="q4"
     )
     
-    # Question 5
     q5 = st.radio(
         "5. What does a journal entry do?",
         options=[
@@ -552,7 +533,6 @@ def show_module6():
         key="q5"
     )
     
-    # Question 6
     q6 = st.radio(
         "6. In accrual accounting, when is revenue recognized?",
         options=[
@@ -565,7 +545,6 @@ def show_module6():
         key="q6"
     )
     
-    # Question 7
     q7 = st.radio(
         "7. What is a reversing entry?",
         options=[
@@ -577,7 +556,6 @@ def show_module6():
         key="q7"
     )
     
-    # Question 8
     q8 = st.radio(
         "8. What effect does recording an accrual have on the financial statements?",
         options=[
@@ -589,7 +567,6 @@ def show_module6():
         key="q8"
     )
     
-    # Question 9
     q9 = st.radio(
         "9. What happens to net income when expenses exceed revenue?",
         options=[
@@ -601,7 +578,6 @@ def show_module6():
         key="q9"
     )
     
-    # Question 10
     q10 = st.radio(
         "10. What is the purpose of the Chart of Accounts?",
         options=[
@@ -614,7 +590,6 @@ def show_module6():
     )
     
     if st.button("Submit Final Quiz", key="submit_final_quiz"):
-        # Define correct answers
         correct_answers = {
             "q1": "Balance Sheet, Income Statement, Cash Flow Statement",
             "q2": "Assets",
@@ -661,7 +636,7 @@ def show_module6():
         st.markdown(f"**Total Score: {score} out of 10**")
 
 def show_module7():
-    st.header("Module 7: Bank Reconciliation")
+    st.header("Module 5: Bank Reconciliation")
     st.markdown("### Teaching Section: Bank Reconciliation Basics")
     with st.expander("Learn Bank Reconciliation", expanded=True):
         st.markdown("""
@@ -703,7 +678,6 @@ def show_module7():
         reconciled_balance = bank_balance - outstanding_checks + deposits_in_transit - bank_fees
         st.markdown(f"**Reconciled Cash Balance (Bank Method):** ${reconciled_balance:.2f}")
         st.info("Ideally, the reconciled balance should match the company's adjusted ledger balance.")
-
 
 if __name__ == '__main__':
     main()
